@@ -6,22 +6,17 @@ function spliceFunctionInline "Spline interpolation of two functions"
   input Real x "Function argument";
   input Real deltax=1 "Region around x with spline interpolation";
   output Real out;
-protected
-  Real scaledX;
-  Real scaledX1;
-  Real y;
 algorithm
-  scaledX1 := x/deltax;
-  scaledX := scaledX1*Modelica.Math.asin(1);
-  if scaledX1 <= -0.999999999 then
-    y := 0;
-  elseif scaledX1 >= 0.999999999 then
-    y := 1;
-  else
-    y := (Modelica.Math.tanh(Modelica.Math.tan(scaledX)) + 1)/2;
-  end if;
-  out := pos*y + (1 - y)*neg;
+  out := (pos-neg)*(if x/deltax <= -0.999999999 then 0 elseif x/deltax >= 0.999999999 then 1 else (Modelica.Math.tanh(Modelica.Math.tan(x/deltax*Modelica.Math.asin(1))) + 1)/2) + neg;
 
   annotation (Inline = true,
-              derivative=Modelica.Media.Air.MoistAir.Utilities.spliceFunction_der);
+              derivative=Modelica.Media.Air.MoistAir.Utilities.spliceFunction_der,
+    Documentation(revisions="<html>
+<ul>
+<li>
+December 28, 2015, by Marcus Fuchs:<br/>
+Change of code as suggested by Filip Jorissen.
+</li>
+</ul>
+</html>"));
 end spliceFunctionInline;
