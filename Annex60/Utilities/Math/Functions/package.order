@@ -10,6 +10,7 @@ polynomial
 powerLinearized
 quadraticLinear
 regNonZeroPower
+regStepInline
 smoothExponential
 smoothHeaviside
 smoothLimit
